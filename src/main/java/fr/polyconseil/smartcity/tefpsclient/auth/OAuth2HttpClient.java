@@ -74,7 +74,7 @@ public class OAuth2HttpClient  {
     }
 
     private synchronized String getOrFetchAccessToken() {
-        if (currentAccessToken != null) {
+        if (currentAccessToken != null && currentAccessTokenExpiration.after(new GregorianCalendar())) {
             return currentAccessToken;
         }
 

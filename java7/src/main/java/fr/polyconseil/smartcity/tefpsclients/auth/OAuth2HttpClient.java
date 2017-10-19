@@ -1,10 +1,10 @@
-package fr.polyconseil.smartcity.tefpsclient.auth;
+package fr.polyconseil.smartcity.tefpsclients.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.polyconseil.smartcity.tefpsclient.auth.dto.Oauth2RequestDTO;
-import fr.polyconseil.smartcity.tefpsclient.auth.dto.Oauth2ResponseDTO;
-import fr.polyconseil.smartcity.tefpsclient.auth.dto.TefpsError;
-import fr.polyconseil.smartcity.tefpsclient.dto.PatchObject;
+import fr.polyconseil.smartcity.tefpsclients.auth.dto.Oauth2RequestDTO;
+import fr.polyconseil.smartcity.tefpsclients.auth.dto.Oauth2ResponseDTO;
+import fr.polyconseil.smartcity.tefpsclients.auth.dto.TefpsError;
+import fr.polyconseil.smartcity.tefpsclients.dto.PatchObject;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -27,6 +27,7 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 
 public class OAuth2HttpClient  {
+    private final String DIRECTORY_API = "/api/oauth2/v1/token";
 
     private final String tokenUrl;
     private final String clientId;
@@ -73,7 +74,7 @@ public class OAuth2HttpClient  {
         return execute(requestBase, valueType);
     }
 
-    private synchronized String getOrFetchAccessToken() {
+    public synchronized String getOrFetchAccessToken() {
         if (currentAccessToken != null
                 && currentAccessTokenExpiration != null
                 && currentAccessTokenExpiration.after(new GregorianCalendar())) {
@@ -103,7 +104,7 @@ public class OAuth2HttpClient  {
         request.add(new BasicNameValuePair("client_id", clientId));
         request.add(new BasicNameValuePair("client_secret", clientSecret));
 
-        HttpPost postRequest = new HttpPost(tokenUrl);
+        HttpPost postRequest = new HttpPost(tokenUrl + DIRECTORY_API);
         postRequest.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
         postRequest.setEntity(new UrlEncodedFormEntity(request));
 

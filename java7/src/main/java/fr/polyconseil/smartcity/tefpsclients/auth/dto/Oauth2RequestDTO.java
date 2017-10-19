@@ -1,4 +1,4 @@
-package fr.polyconseil.smartcity.tefpsclient.auth.dto;
+package fr.polyconseil.smartcity.tefpsclients.auth.dto;
 
 public class Oauth2RequestDTO {
     public static final String GRANT_CLIENT_CREDENTIALS = "client_credentials";

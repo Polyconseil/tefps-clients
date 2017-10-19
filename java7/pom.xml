@@ -4,12 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.polyconseil.smartcity.tefps-client</groupId>
-    <artifactId>tefps-client</artifactId>
+    <groupId>fr.polyconseil.smartcity.tefps-clients</groupId>
+    <artifactId>tefps-clients</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>TeFPS clients</name>
+    <description>Java clients for TeFPS APIs</description>
+    <url>https://github.com/Polyconseil/tefps-clients</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/Polyconseil/tefps-clients</url>
+    </scm>
 
     <dependencies>
-
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -27,7 +42,6 @@
             <artifactId>jsr305</artifactId>
             <version>3.0.2</version>
         </dependency>
-
     </dependencies>
 
 </project>

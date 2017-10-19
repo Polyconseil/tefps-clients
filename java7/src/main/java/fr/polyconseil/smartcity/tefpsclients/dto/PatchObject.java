@@ -1,4 +1,4 @@
-package fr.polyconseil.smartcity.tefpsclient.dto;
+package fr.polyconseil.smartcity.tefpsclients.dto;
 
 
 import javax.annotation.Nullable;

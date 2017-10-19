@@ -1,4 +1,4 @@
-package fr.polyconseil.smartcity.tefpsclient.auth.dto;
+package fr.polyconseil.smartcity.tefpsclients.auth.dto;
 
 public class TefpsError {
 

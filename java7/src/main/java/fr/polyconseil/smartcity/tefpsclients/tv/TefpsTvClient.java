@@ -1,11 +1,11 @@
-package fr.polyconseil.smartcity.tefpsclient.tv;
+package fr.polyconseil.smartcity.tefpsclients.tv;
 
-import fr.polyconseil.smartcity.tefpsclient.auth.OAuth2HttpClient;
-import fr.polyconseil.smartcity.tefpsclient.dto.PatchObject;
-import fr.polyconseil.smartcity.tefpsclient.dto.tv.ParkingRightCreationDTO;
-import fr.polyconseil.smartcity.tefpsclient.dto.tv.ParkingRightDTO;
-import fr.polyconseil.smartcity.tefpsclient.dto.tv.ParkingRightType;
-import fr.polyconseil.smartcity.tefpsclient.dto.tv.Plate;
+import fr.polyconseil.smartcity.tefpsclients.auth.OAuth2HttpClient;
+import fr.polyconseil.smartcity.tefpsclients.dto.PatchObject;
+import fr.polyconseil.smartcity.tefpsclients.dto.tv.ParkingRightCreationDTO;
+import fr.polyconseil.smartcity.tefpsclients.dto.tv.ParkingRightDTO;
+import fr.polyconseil.smartcity.tefpsclients.dto.tv.ParkingRightType;
+import fr.polyconseil.smartcity.tefpsclients.dto.tv.Plate;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -15,12 +15,13 @@ import java.util.List;
 import java.util.Map;
 
 public class TefpsTvClient {
+    private final String TV_API = "/api/cities/{cityId}/tickets/v1";
 
     private String tvUrl;
     private OAuth2HttpClient oAuth2Client;
 
-    public TefpsTvClient (String directoryUrl, String clientId, String clientSecret, String tvUrl) {
-        oAuth2Client = new OAuth2HttpClient(directoryUrl, clientId, clientSecret);
+    public TefpsTvClient (OAuth2HttpClient oAuth2Client, String tvUrl) {
+        this.oAuth2Client = oAuth2Client;
         this.tvUrl = tvUrl;
     }
 
@@ -62,7 +63,12 @@ public class TefpsTvClient {
         dto.setPrice(price);
         dto.setPricingContext(pricingContext);
 
-        return oAuth2Client.put(tvUrl + "/" + tvId, cityId, dto, ParkingRightDTO.class);
+        return oAuth2Client.put(
+                buildPath(tvId),
+                cityId,
+                dto,
+                ParkingRightDTO.class
+        );
     }
 
     public ParkingRightDTO patchTv(
@@ -98,18 +104,30 @@ public class TefpsTvClient {
             patchList.add(patch);
         }
 
-        return oAuth2Client.patch(tvUrl + "/" + tvId, cityId, patchList, ParkingRightDTO.class);
+        return oAuth2Client.patch(
+                buildPath(tvId),
+                cityId,
+                patchList,
+                ParkingRightDTO.class
+        );
     }
 
     public ParkingRightDTO fetchTv(String cityId, String tvId) throws IOException {
         return oAuth2Client.get(
-                tvUrl + "/" + tvId,
+                buildPath(tvId),
                 cityId,
                 ParkingRightDTO.class
         );
     }
 
     public void deleteTv(String cityId, String tvId) throws IOException {
-        oAuth2Client.delete(tvUrl + "/" + tvId, cityId);
+        oAuth2Client.delete(
+                buildPath(tvId),
+                cityId
+        );
+    }
+
+    private String buildPath(String tvId) {
+        return tvUrl + "/" + TV_API + "/" + tvId;
     }
 }

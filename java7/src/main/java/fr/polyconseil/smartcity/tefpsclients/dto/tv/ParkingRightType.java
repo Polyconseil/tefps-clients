@@ -1,4 +1,4 @@
-package fr.polyconseil.smartcity.tefpsclient.dto.tv;
+package fr.polyconseil.smartcity.tefpsclients.dto.tv;
 
 public enum ParkingRightType {
     TICKET,

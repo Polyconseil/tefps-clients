@@ -11,6 +11,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -18,7 +19,11 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
@@ -96,18 +101,13 @@ public class OAuth2HttpClient  {
         try {
             Oauth2ResponseDTO oauth2Response = oauth2TokenClientCredentials();
             currentAccessToken = oauth2Response.getAccessToken();
-            currentAccessTokenExpiration = new Date();
-            currentAccessTokenExpiration.setTime(currentAccessTokenExpiration.getTime() + oauth2Response.getExpiresIn() * 1000);
+            currentAccessTokenExpiration = new Date(System.currentTimeMillis() + oauth2Response.getExpiresIn() * 1000);
         } catch (IOException e) {
             throw new TefpsCoreOauth2TokenRetrievalException(e.getMessage(), e);
         } catch (Exception e) {
             throw new TefpsCoreOauth2TokenRetrievalException(e);
         }
         return currentAccessToken;
-    }
-
-    private String prepareUri(String uri, String cityId) {
-        return uri.replace("{cityId}", cityId);
     }
 
     private Oauth2ResponseDTO oauth2TokenClientCredentials() throws IOException {
@@ -123,13 +123,13 @@ public class OAuth2HttpClient  {
         return this.doExecute(postRequest, Oauth2ResponseDTO.class);
     }
 
-    public <T> T get(String uri, String cityId, Class<T> valueType) throws IOException {
-        HttpGet getRequest = new HttpGet(prepareUri(uri, cityId));
+    public <T> T get(URI uri, Class<T> valueType) throws IOException {
+        HttpGet getRequest = new HttpGet(uri);
         return this.executeAuthenticated(getRequest, valueType);
     }
 
-    public <T> T put(String uri, String cityId, Object entity, Class<T> valueType) throws IOException {
-        HttpPut putRequest = new HttpPut(prepareUri(uri, cityId));
+    public <T> T put(URI uri, Object entity, Class<T> valueType) throws IOException {
+        HttpPut putRequest = new HttpPut(uri);
 
         ObjectMapper mapper = new ObjectMapper();
         putRequest.setEntity(new StringEntity(mapper.writeValueAsString(entity)));
@@ -137,18 +137,24 @@ public class OAuth2HttpClient  {
         return this.executeAuthenticated(putRequest, valueType);
     }
 
-    public void delete(String uri, String cityId) throws IOException {
-        HttpDelete deleteRequest = new HttpDelete(prepareUri(uri, cityId));
+    public void delete(URI uri) throws IOException {
+        HttpDelete deleteRequest = new HttpDelete(uri);
         this.executeAuthenticated(deleteRequest, Void.class);
     }
 
-    public <T> T patch(String uri, String cityId, List<PatchObject> patchList, Class<T> valueType) throws IOException {
-        HttpPatch patchRequest = new HttpPatch(prepareUri(uri, cityId));
+    public <T> T patch(URI uri, List<PatchObject> patchList, Class<T> valueType) throws IOException {
+        HttpPatch patchRequest = new HttpPatch(uri);
 
         ObjectMapper mapper = new ObjectMapper();
         patchRequest.setEntity(new StringEntity(mapper.writeValueAsString(patchList)));
 
         return this.executeAuthenticated(patchRequest, valueType);
+    }
+
+    public static URI buildURI(String host, String path, String cityId, String id) throws URISyntaxException {
+        URIBuilder builder = new URIBuilder(host);
+        builder.setPath(path.replace("{cityId}", cityId).replace("{id}", id));
+        return builder.build();
     }
 
     public static class TefpsCoreOauth2TokenRetrievalException extends RuntimeException {

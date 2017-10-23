@@ -9,10 +9,15 @@ import fr.polyconseil.smartcity.tefpsclients.dto.tv.Plate;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class TefpsTvClient {
-    private static final String TV_API = "/api/cities/{cityId}/tickets/v1";
+    private static final String TV_API = "/api/cities/{cityId}/tickets/v1/{id}";
 
     private String tvUrl;
     private OAuth2HttpClient oAuth2Client;
@@ -38,7 +43,7 @@ public class TefpsTvClient {
             @Nullable Date cancelDatetime,
             int price,
             @Nullable Map<String, Object> pricingContext
-    ) throws IOException {
+    ) throws IOException, URISyntaxException {
         ParkingRightCreationDTO dto = new ParkingRightCreationDTO();
 
         dto.setType(ParkingRightType.TICKET);
@@ -61,8 +66,7 @@ public class TefpsTvClient {
         dto.setPricingContext(pricingContext);
 
         return oAuth2Client.put(
-                buildPath(tvId),
-                cityId,
+                buildURI(cityId, tvId),
                 dto,
                 ParkingRightDTO.class
         );
@@ -74,7 +78,7 @@ public class TefpsTvClient {
             @Nullable Date endDatetime,
             @Nullable Integer price,
             @Nullable Map<String, Object> pricingContext
-    ) throws IOException {
+    ) throws IOException, URISyntaxException {
         List<PatchObject> patchList = new ArrayList<PatchObject>();
 
         if (endDatetime != null) {
@@ -102,29 +106,24 @@ public class TefpsTvClient {
         }
 
         return oAuth2Client.patch(
-                buildPath(tvId),
-                cityId,
+                buildURI(cityId, tvId),
                 patchList,
                 ParkingRightDTO.class
         );
     }
 
-    public ParkingRightDTO fetchTv(String cityId, String tvId) throws IOException {
+    public ParkingRightDTO fetchTv(String cityId, String tvId) throws IOException, URISyntaxException {
         return oAuth2Client.get(
-                buildPath(tvId),
-                cityId,
+                buildURI(cityId, tvId),
                 ParkingRightDTO.class
         );
     }
 
-    public void deleteTv(String cityId, String tvId) throws IOException {
-        oAuth2Client.delete(
-                buildPath(tvId),
-                cityId
-        );
+    public void deleteTv(String cityId, String tvId) throws IOException, URISyntaxException {
+        oAuth2Client.delete(buildURI(cityId, tvId));
     }
 
-    private String buildPath(String tvId) {
-        return tvUrl + "/" + TV_API + "/" + tvId;
+    private URI buildURI(String tvId, String cityId) throws IOException, URISyntaxException {
+        return OAuth2HttpClient.buildURI(tvUrl, TV_API, tvId, cityId);
     }
 }

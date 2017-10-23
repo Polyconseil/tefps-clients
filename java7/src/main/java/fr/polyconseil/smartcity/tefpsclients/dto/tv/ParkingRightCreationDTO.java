@@ -1,7 +1,7 @@
 package fr.polyconseil.smartcity.tefpsclients.dto.tv;
 
 import javax.annotation.Nullable;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -21,12 +21,12 @@ public class ParkingRightCreationDTO {
 
     private Plate licensePlate;
 
-    private Calendar startDatetime;
-    private Calendar endDatetime;
-    private Calendar creationDatetime;
+    private Date startDatetime;
+    private Date endDatetime;
+    private Date creationDatetime;
 
     @Nullable
-    private Calendar cancelDatetime;
+    private Date cancelDatetime;
 
     private int price;
 
@@ -83,36 +83,36 @@ public class ParkingRightCreationDTO {
         this.licensePlate = licensePlate;
     }
 
-    public Calendar getStartDatetime() {
+    public Date getStartDatetime() {
         return startDatetime;
     }
 
-    public void setStartDatetime(Calendar startDatetime) {
+    public void setStartDatetime(Date startDatetime) {
         this.startDatetime = startDatetime;
     }
 
-    public Calendar getEndDatetime() {
+    public Date getEndDatetime() {
         return endDatetime;
     }
 
-    public void setEndDatetime(Calendar endDatetime) {
+    public void setEndDatetime(Date endDatetime) {
         this.endDatetime = endDatetime;
     }
 
-    public Calendar getCreationDatetime() {
+    public Date getCreationDatetime() {
         return creationDatetime;
     }
 
-    public void setCreationDatetime(Calendar creationDatetime) {
+    public void setCreationDatetime(Date creationDatetime) {
         this.creationDatetime = creationDatetime;
     }
 
     @Nullable
-    public Calendar getCancelDatetime() {
+    public Date getCancelDatetime() {
         return cancelDatetime;
     }
 
-    public void setCancelDatetime(@Nullable Calendar cancelDatetime) {
+    public void setCancelDatetime(@Nullable Date cancelDatetime) {
         this.cancelDatetime = cancelDatetime;
     }
 

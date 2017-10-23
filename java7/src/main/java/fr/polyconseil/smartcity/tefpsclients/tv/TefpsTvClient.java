@@ -9,13 +9,10 @@ import fr.polyconseil.smartcity.tefpsclients.dto.tv.Plate;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TefpsTvClient {
-    private final String TV_API = "/api/cities/{cityId}/tickets/v1";
+    private static final String TV_API = "/api/cities/{cityId}/tickets/v1";
 
     private String tvUrl;
     private OAuth2HttpClient oAuth2Client;
@@ -35,10 +32,10 @@ public class TefpsTvClient {
             String plate,
             @Nullable String plateCountry,
             String pricingCategory,
-            Calendar startDatetime,
-            Calendar endDatetime,
-            Calendar creationDatetime,
-            @Nullable Calendar cancelDatetime,
+            Date startDatetime,
+            Date endDatetime,
+            Date creationDatetime,
+            @Nullable Date cancelDatetime,
             int price,
             @Nullable Map<String, Object> pricingContext
     ) throws IOException {
@@ -74,7 +71,7 @@ public class TefpsTvClient {
     public ParkingRightDTO patchTv(
             String cityId,
             String tvId,
-            @Nullable Calendar endDatetime,
+            @Nullable Date endDatetime,
             @Nullable Integer price,
             @Nullable Map<String, Object> pricingContext
     ) throws IOException {

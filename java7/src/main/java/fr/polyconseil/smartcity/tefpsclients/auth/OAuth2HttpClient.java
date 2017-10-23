@@ -18,23 +18,21 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 
 
 public class OAuth2HttpClient  {
-    private final String DIRECTORY_API = "/api/oauth2/v1/token";
+    private static final String DIRECTORY_API = "/api/oauth2/v1/token";
 
     private final String tokenUrl;
     private final String clientId;
     private final String clientSecret;
 
     private String currentAccessToken;
-    private Calendar currentAccessTokenExpiration;
+    private Date currentAccessTokenExpiration;
 
     private HttpClient httpClient;
 
@@ -45,7 +43,7 @@ public class OAuth2HttpClient  {
         this.httpClient = HttpClientBuilder.create().build();
     }
 
-    private <T> T execute(HttpRequestBase requestBase, Class<T> valueType) throws IOException {
+    private <T> T doExecute(HttpRequestBase requestBase, Class<T> valueType) throws IOException {
         HttpResponse response = httpClient.execute(requestBase);
 
         BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
@@ -67,25 +65,39 @@ public class OAuth2HttpClient  {
         return result.toString().length() != 0 ? mapper.readValue(result.toString(), valueType) : null;
     }
 
-    private <T> T executeAuthenticated(HttpRequestBase requestBase, Class<T> valueType) throws IOException {
+    private <T> T execute(HttpRequestBase requestBase, Class<T> valueType) throws IOException {
         String accessToken = getOrFetchAccessToken();
         requestBase.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         requestBase.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-        return execute(requestBase, valueType);
+
+        return doExecute(requestBase, valueType);
+    }
+
+    private <T> T executeAuthenticated(HttpRequestBase requestBase, Class<T> valueType) throws IOException {
+        try {
+            return execute(requestBase, valueType);
+        } catch (TefpsCoreClientErrorException e) {
+            if (e.getStatus() == HTTP_UNAUTHORIZED) {
+                currentAccessToken = null;
+                return execute(requestBase, valueType);
+            } else {
+                throw e;
+            }
+        }
     }
 
     public synchronized String getOrFetchAccessToken() {
         if (currentAccessToken != null
                 && currentAccessTokenExpiration != null
-                && currentAccessTokenExpiration.after(new GregorianCalendar())) {
+                && currentAccessTokenExpiration.after(new Date())) {
             return currentAccessToken;
         }
 
         try {
             Oauth2ResponseDTO oauth2Response = oauth2TokenClientCredentials();
             currentAccessToken = oauth2Response.getAccessToken();
-            currentAccessTokenExpiration = new GregorianCalendar();
-            currentAccessTokenExpiration.add(Calendar.SECOND, oauth2Response.getExpiresIn());
+            currentAccessTokenExpiration = new Date();
+            currentAccessTokenExpiration.setTime(currentAccessTokenExpiration.getTime() + oauth2Response.getExpiresIn() * 1000);
         } catch (IOException e) {
             throw new TefpsCoreOauth2TokenRetrievalException(e.getMessage(), e);
         } catch (Exception e) {
@@ -108,7 +120,7 @@ public class OAuth2HttpClient  {
         postRequest.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
         postRequest.setEntity(new UrlEncodedFormEntity(request));
 
-        return this.execute(postRequest, Oauth2ResponseDTO.class);
+        return this.doExecute(postRequest, Oauth2ResponseDTO.class);
     }
 
     public <T> T get(String uri, String cityId, Class<T> valueType) throws IOException {
@@ -153,6 +165,14 @@ public class OAuth2HttpClient  {
     public static class TefpsCoreClientErrorException extends RuntimeException {
         final int status;
         final String error;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public String getError() {
+            return error;
+        }
 
         TefpsCoreClientErrorException(String message, String error, int status) {
             super(message);

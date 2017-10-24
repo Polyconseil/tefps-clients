@@ -6,7 +6,7 @@
 
     <groupId>fr.polyconseil.smartcity</groupId>
     <artifactId>tefps-clients</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>TeFPS clients</name>

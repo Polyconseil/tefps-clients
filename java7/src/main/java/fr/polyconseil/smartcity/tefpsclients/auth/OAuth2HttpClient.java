@@ -1,10 +1,10 @@
 package fr.polyconseil.smartcity.tefpsclients.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.polyconseil.smartcity.tefpsclients.auth.dto.Oauth2RequestDTO;
 import fr.polyconseil.smartcity.tefpsclients.auth.dto.Oauth2ResponseDTO;
 import fr.polyconseil.smartcity.tefpsclients.auth.dto.TefpsError;
 import fr.polyconseil.smartcity.tefpsclients.dto.PatchObject;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -12,13 +12,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -31,43 +30,36 @@ import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 
 public class OAuth2HttpClient  {
     private static final String DIRECTORY_API = "/api/oauth2/v1/token";
+    private static final String GRANT_CLIENT_CREDENTIALS = "client_credentials";
 
     private final String tokenUrl;
     private final String clientId;
     private final String clientSecret;
+    private final ObjectMapper mapper;
+    private final HttpClient httpClient;
 
     private String currentAccessToken;
     private Date currentAccessTokenExpiration;
-
-    private HttpClient httpClient;
 
     public OAuth2HttpClient(String tokenUrl, String clientId, String clientSecret) {
         this.tokenUrl = tokenUrl;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.httpClient = HttpClientBuilder.create().build();
+        this.mapper = new ObjectMapper();
     }
 
     private <T> T doExecute(HttpRequestBase requestBase, Class<T> valueType) throws IOException {
         HttpResponse response = httpClient.execute(requestBase);
 
-        BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
-
-        StringBuilder result = new StringBuilder();
-        String line;
-        while((line = br.readLine()) != null){
-            result.append(line);
-        }
-        br.close();
-
-        ObjectMapper mapper = new ObjectMapper();
+        byte[] content = IOUtils.toByteArray(response.getEntity().getContent());
 
         if (response.getStatusLine().getStatusCode() != HTTP_OK) {
-            TefpsError error = mapper.readValue(result.toString(), TefpsError.class);
+            TefpsError error = mapper.readValue(content, TefpsError.class);
             throw new TefpsCoreClientErrorException(error.getMessage(), error.getError(), error.getStatus());
         }
 
-        return result.toString().length() != 0 ? mapper.readValue(result.toString(), valueType) : null;
+        return content.length != 0 ? mapper.readValue(content, valueType) : null;
     }
 
     private <T> T execute(HttpRequestBase requestBase, Class<T> valueType) throws IOException {
@@ -112,7 +104,7 @@ public class OAuth2HttpClient  {
 
     private Oauth2ResponseDTO oauth2TokenClientCredentials() throws IOException {
         List<NameValuePair> request = new ArrayList<NameValuePair>();
-        request.add(new BasicNameValuePair("grant_type", Oauth2RequestDTO.GRANT_CLIENT_CREDENTIALS));
+        request.add(new BasicNameValuePair("grant_type", GRANT_CLIENT_CREDENTIALS));
         request.add(new BasicNameValuePair("client_id", clientId));
         request.add(new BasicNameValuePair("client_secret", clientSecret));
 
@@ -130,9 +122,7 @@ public class OAuth2HttpClient  {
 
     public <T> T put(URI uri, Object entity, Class<T> valueType) throws IOException {
         HttpPut putRequest = new HttpPut(uri);
-
-        ObjectMapper mapper = new ObjectMapper();
-        putRequest.setEntity(new StringEntity(mapper.writeValueAsString(entity)));
+        putRequest.setEntity(new ByteArrayEntity(mapper.writeValueAsBytes(entity)));
 
         return this.executeAuthenticated(putRequest, valueType);
     }
@@ -144,8 +134,6 @@ public class OAuth2HttpClient  {
 
     public <T> T patch(URI uri, List<PatchObject> patchList, Class<T> valueType) throws IOException {
         HttpPatch patchRequest = new HttpPatch(uri);
-
-        ObjectMapper mapper = new ObjectMapper();
         patchRequest.setEntity(new StringEntity(mapper.writeValueAsString(patchList)));
 
         return this.executeAuthenticated(patchRequest, valueType);

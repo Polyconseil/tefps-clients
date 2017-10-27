@@ -13,7 +13,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -134,7 +133,7 @@ public class OAuth2HttpClient  {
 
     public <T> T patch(URI uri, List<PatchObject> patchList, Class<T> valueType) throws IOException {
         HttpPatch patchRequest = new HttpPatch(uri);
-        patchRequest.setEntity(new StringEntity(mapper.writeValueAsString(patchList)));
+        patchRequest.setEntity(new ByteArrayEntity(mapper.writeValueAsBytes(patchList)));
 
         return this.executeAuthenticated(patchRequest, valueType);
     }

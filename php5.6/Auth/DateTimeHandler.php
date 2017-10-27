@@ -1,6 +1,6 @@
 <?php
 
-namespace TefpsClientBundle\Auth;
+namespace TefpsClientsBundle\Auth;
 
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
 use JMS\Serializer\GraphNavigator;

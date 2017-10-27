@@ -1,6 +1,6 @@
 <?php
 
-namespace TefpsClientBundle\dto;
+namespace TefpsClientsBundle\dto;
 
 class PatchObject
 {

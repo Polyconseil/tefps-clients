@@ -1,6 +1,6 @@
 <?php
 
-namespace TefpsClientBundle\Auth;
+namespace TefpsClientsBundle\Auth;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;

@@ -1,5 +1,5 @@
 <?php
-namespace TefpsClientBundle\Tv;
+namespace TefpsClientsBundle\Tv;
 
 use TefpsClientBundle\Auth\OAuth2HttpClient;
 use TefpsClientBundle\dto\tv\ParkingRightDTO;

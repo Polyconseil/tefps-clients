@@ -1,6 +1,6 @@
 <?php
 
-namespace TefpsClientBundle\dto\tv;
+namespace TefpsClientsBundle\dto\tv;
 
 class ParkingRightType
 {

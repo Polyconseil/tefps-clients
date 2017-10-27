@@ -24,6 +24,15 @@
         <url>https://github.com/Polyconseil/tefps-clients.git</url>
     </scm>
 
+    <developers>
+        <developer>
+            <name>Polyconseil</name>
+            <email>olivier.dairay@polyconseil.fr</email>
+            <organization>Polyconseil</organization>
+            <organizationUrl>http://www.polyconseil.fr</organizationUrl>
+        </developer>
+    </developers>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -131,6 +140,11 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--no-tty</arg>
+                                    </gpgArguments>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>

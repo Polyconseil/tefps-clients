@@ -30,6 +30,7 @@ public class TefpsTvClient {
     public ParkingRightDTO createTv(
             String cityId,
             String tvId,
+            ParkingRightType type,
             String source,
             @Nullable String fineLegalId,
             String zoneId,
@@ -46,7 +47,7 @@ public class TefpsTvClient {
     ) throws IOException, URISyntaxException {
         ParkingRightCreationDTO dto = new ParkingRightCreationDTO();
 
-        dto.setType(ParkingRightType.TICKET);
+        dto.setType(type);
         dto.setFineLegalId(fineLegalId);
         dto.setSource(source);
         dto.setZoneId(zoneId);
@@ -123,7 +124,7 @@ public class TefpsTvClient {
         oAuth2Client.delete(buildURI(cityId, tvId));
     }
 
-    private URI buildURI(String tvId, String cityId) throws IOException, URISyntaxException {
-        return OAuth2HttpClient.buildURI(tvUrl, TV_API, tvId, cityId);
+    private URI buildURI(String cityId, String tvId) throws IOException, URISyntaxException {
+        return OAuth2HttpClient.buildURI(tvUrl, TV_API, cityId, tvId);
     }
 }

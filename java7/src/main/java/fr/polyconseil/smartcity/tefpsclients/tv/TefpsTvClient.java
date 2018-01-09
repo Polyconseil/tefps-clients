@@ -80,7 +80,7 @@ public class TefpsTvClient {
             @Nullable Integer price,
             @Nullable Map<String, Object> pricingContext
     ) throws IOException, URISyntaxException {
-        List<PatchObject> patchList = new ArrayList<PatchObject>();
+        List<PatchObject> patchList = new ArrayList<>();
 
         if (endDatetime != null) {
             PatchObject patch = new PatchObject();
@@ -124,7 +124,7 @@ public class TefpsTvClient {
         oAuth2Client.delete(buildURI(cityId, tvId));
     }
 
-    private URI buildURI(String cityId, String tvId) throws IOException, URISyntaxException {
+    private URI buildURI(String cityId, String tvId) throws URISyntaxException {
         return OAuth2HttpClient.buildURI(tvUrl, TV_API, cityId, tvId);
     }
 }

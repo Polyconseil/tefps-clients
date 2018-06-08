@@ -3,6 +3,7 @@ package fr.polyconseil.smartcity.tefpsclients.dto.subscriber;
 import java.util.Date;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LightSubscriberDTO {
     private String subscriberId;
 

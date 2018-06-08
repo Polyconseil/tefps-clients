@@ -1,5 +1,6 @@
 package fr.polyconseil.smartcity.tefpsclients.dto.tv;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ParkingRightDTO extends ParkingRightCreationDTO {
 
     private String ticketId;

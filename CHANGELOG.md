@@ -10,7 +10,7 @@
 
  * Java7 TefpsSubscriberClient - Add TefpsSubscriberClient
 
-### 1.1.1
+### 1.1.2
 
  * Java7 TefpsTvClient - Ignore additional fields
  * Java7 TefpsSubscriberClient - Ignore additional fields

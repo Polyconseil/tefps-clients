@@ -1,5 +1,7 @@
 package fr.polyconseil.smartcity.tefpsclients.dto.subscriber;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 import java.util.List;
 

@@ -1,5 +1,7 @@
 package fr.polyconseil.smartcity.tefpsclients.dto.tv;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ParkingRightDTO extends ParkingRightCreationDTO {
 

@@ -13,7 +13,7 @@ Add maven dependency to your pom.xml
 <dependency>
     <groupId>fr.polyconseil.smartcity</groupId>
     <artifactId>tefps-clients</artifactId>
-    <version>1.1.2</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 

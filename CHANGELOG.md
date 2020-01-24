@@ -14,3 +14,8 @@
 
  * Java7 TefpsTvClient - Ignore additional fields
  * Java7 TefpsSubscriberClient - Ignore additional fields
+
+### 1.2.0
+
+ * Java7 TefpsTvClient - Add tariffCode parameter
+ * Update com.fasterxml.jackson.core to 2.9.10.1

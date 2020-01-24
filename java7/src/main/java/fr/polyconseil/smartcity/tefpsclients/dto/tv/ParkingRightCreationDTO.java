@@ -30,6 +30,8 @@ public class ParkingRightCreationDTO {
 
     private int price;
 
+    private String tariffCode;
+
     @Nullable
     private Map<String, Object> pricingContext;
 
@@ -131,5 +133,13 @@ public class ParkingRightCreationDTO {
 
     public void setPricingContext(@Nullable Map<String, Object> pricingContext) {
         this.pricingContext = pricingContext;
+    }
+
+    public String getTariffCode() {
+        return tariffCode;
+    }
+
+    public void setTariffCode(String tariffCode) {
+        this.tariffCode = tariffCode;
     }
 }

@@ -4,6 +4,8 @@ import fr.polyconseil.smartcity.tefpsclients.dto.tv.Plate;
 
 import javax.annotation.Nullable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FnmsParkingRightPriceRequestV1DTO {
 

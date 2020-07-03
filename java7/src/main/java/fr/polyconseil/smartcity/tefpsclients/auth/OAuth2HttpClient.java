@@ -126,6 +126,13 @@ public class OAuth2HttpClient  {
         return this.executeAuthenticated(putRequest, valueType);
     }
 
+    public <T> T post(URI uri, Object entity, Class<T> valueType) throws IOException {
+        HttpPost postRequest = new HttpPost(uri);
+        postRequest.setEntity(new ByteArrayEntity(mapper.writeValueAsBytes(entity)));
+
+        return this.executeAuthenticated(postRequest, valueType);
+    }
+
     public void delete(URI uri) throws IOException {
         HttpDelete deleteRequest = new HttpDelete(uri);
         this.executeAuthenticated(deleteRequest, Void.class);
@@ -141,6 +148,12 @@ public class OAuth2HttpClient  {
     public static URI buildURI(String host, String path, String cityId, String id) throws URISyntaxException {
         URIBuilder builder = new URIBuilder(host);
         builder.setPath(path.replace("{cityId}", cityId).replace("{id}", id));
+        return builder.build();
+    }
+
+    public static URI buildURI(String host, String path, String cityId) throws URISyntaxException {
+        URIBuilder builder = new URIBuilder(host);
+        builder.setPath(path.replace("{cityId}", cityId));
         return builder.build();
     }
 

@@ -1,5 +1,6 @@
 package fr.polyconseil.smartcity.tefpsclients.dto.subscriber;
 
+import java.util.Date;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -44,19 +45,19 @@ public class LightSubscriptionPublicDTO {
         this.validityAreas = validityAreas;
     }
 
-    public String getStartOfValidityDatetime() {
+    public Date getStartOfValidityDatetime() {
         return startOfValidityDatetime;
     }
 
-    public void setStartOfValidityDatetime(String startOfValidityDatetime) {
+    public void setStartOfValidityDatetime(Date startOfValidityDatetime) {
         this.startOfValidityDatetime = startOfValidityDatetime;
     }
 
-    public String getEndOfValidityDatetime() {
+    public Date getEndOfValidityDatetime() {
         return endOfValidityDatetime;
     }
 
-    public void setEndOfValidityDatetime(String endOfValidityDatetime) {
+    public void setEndOfValidityDatetime(Date endOfValidityDatetime) {
         this.endOfValidityDatetime = endOfValidityDatetime;
     }
 }

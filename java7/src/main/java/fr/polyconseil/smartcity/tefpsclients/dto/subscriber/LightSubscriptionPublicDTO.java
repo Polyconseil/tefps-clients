@@ -9,8 +9,8 @@ public class LightSubscriptionPublicDTO {
     private String plate;
     private String subscriptionPlanId;
     private List<String> validityAreas;
-    private String startOfValidityDatetime;
-    private String endOfValidityDatetime;
+    private Date startOfValidityDatetime;
+    private Date endOfValidityDatetime;
 
     public String getSubscriptionId() {
         return subscriptionId;

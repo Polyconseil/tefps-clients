@@ -1,5 +1,7 @@
 package fr.polyconseil.smartcity.tefpsclients.pricing;
 
+import javax.annotation.Nullable;
+
 import fr.polyconseil.smartcity.tefpsclients.auth.OAuth2HttpClient;
 import fr.polyconseil.smartcity.tefpsclients.dto.pricing.*;
 
@@ -22,9 +24,9 @@ public class TefpsPricingClient {
             String cityId,
             String plate,
             String plateCountry,
-            String pricingCategory,
+            @Nullable String pricingCategory,
             String tariffCode,
-            String zoneId
+            @Nullable String zoneId
             ) {
         Plate plateDTO = new Plate();
         plateDTO.setPlate(plate);
@@ -47,7 +49,7 @@ public class TefpsPricingClient {
             String cityId,
             String plate,
             String plateCountry,
-            String pricingCategory
+            @Nullable String pricingCategory
     ) {
         Plate plateDTO = new Plate();
         plateDTO.setPlate(plate);
@@ -64,6 +66,6 @@ public class TefpsPricingClient {
     }
 
     private URI buildURI(String cityId, String endpoint) throws URISyntaxException {
-        return OAuth2HttpClient.buildURI(tvUrl, endpoint, cityId);
+        return OAuth2HttpClient.buildURI(pricingUrl, tvUrl, endpoint, cityId);
     }
 }

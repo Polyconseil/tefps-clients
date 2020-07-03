@@ -1,10 +1,11 @@
 package fr.polyconseil.smartcity.tefpsclients.pricing;
 
-import javax.annotation.Nullable;
-
 import fr.polyconseil.smartcity.tefpsclients.auth.OAuth2HttpClient;
 import fr.polyconseil.smartcity.tefpsclients.dto.pricing.*;
+import fr.polyconseil.smartcity.tefpsclients.dto.tv.Plate;
 
+import javax.annotation.Nullable;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -27,7 +28,7 @@ public class TefpsPricingClient {
             @Nullable String pricingCategory,
             String tariffCode,
             @Nullable String zoneId
-            ) {
+    ) throws IOException, URISyntaxException {
         Plate plateDTO = new Plate();
         plateDTO.setPlate(plate);
         plateDTO.setPlateCountry(plateCountry);
@@ -45,12 +46,12 @@ public class TefpsPricingClient {
         );
     }
 
-    public void fetchParkingDetail(
+    public FnmsParkingDetailResultV1DTO fetchParkingDetail(
             String cityId,
             String plate,
             String plateCountry,
             @Nullable String pricingCategory
-    ) {
+    ) throws IOException, URISyntaxException {
         Plate plateDTO = new Plate();
         plateDTO.setPlate(plate);
         plateDTO.setPlateCountry(plateCountry);
@@ -62,10 +63,10 @@ public class TefpsPricingClient {
                 buildURI(cityId, API_FNMS_PARKING_DETAIL),
                 fnmsParkingDetailRequestV1DTO,
                 FnmsParkingDetailResultV1DTO.class
-                );
+        );
     }
 
     private URI buildURI(String cityId, String endpoint) throws URISyntaxException {
-        return OAuth2HttpClient.buildURI(pricingUrl, tvUrl, endpoint, cityId);
+        return OAuth2HttpClient.buildURI(pricingUrl, endpoint, cityId);
     }
 }

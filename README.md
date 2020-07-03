@@ -4,6 +4,7 @@
 
 - Java7 TefpsTvClient
 - Java7 TefpsSubscriberClient
+- Java7 TefpsPricingClient
 
 ### Java7 All clients - Installation
 
@@ -60,4 +61,23 @@ TefpsSubscriberClient client = new TefpsSubscriberClient(new OAuth2HttpClient(
 
 // Fetch Subscriber Sample
 LightSubscriberDTO subscriber = client.fetchSubscriber("cityId", "subscriberId");
+```
+
+### Java7 TefpsPricingClient - Usage
+
+```java
+import fr.polyconseil.smartcity.tefpsclient.pricing.TefpsPricingClient;
+import fr.polyconseil.smartcity.tefpsclients.auth.OAuth2HttpClient;
+import fr.polyconseil.smartcity.tefpsclient.dto.pricing.FnmsParkingDetailResultV1DTO ;
+
+//...
+// Instantiate client
+TefpsPricingClient client = new TefpsPricingClient(new OAuth2HttpClient(
+        "http://tefps-directory-host:port",
+        "clientId",
+        "clientSecret"),
+        "http://tefps-pricing-host:port"
+);
+
+FnmsParkingDetailResultV1DTO result = client.fetchParkingDetail("cityId", "AA-123-AA", "FR", null);
 ```

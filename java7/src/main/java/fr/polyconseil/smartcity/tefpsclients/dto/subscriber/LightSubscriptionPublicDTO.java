@@ -1,7 +1,9 @@
 package fr.polyconseil.smartcity.tefpsclients.dto.subscriber;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LightSubscriptionPublicDTO {
     private String subscriptionId;
     private String plate;

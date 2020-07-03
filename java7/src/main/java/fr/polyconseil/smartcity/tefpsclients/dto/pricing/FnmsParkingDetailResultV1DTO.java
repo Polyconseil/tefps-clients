@@ -5,6 +5,9 @@ import fr.polyconseil.smartcity.tefpsclients.dto.subscriber.LightSubscriptionPub
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FnmsParkingDetailResultV1DTO {
     private List<ParkingRightDTO> currentParkingRights;
     private List<LightSubscriptionPublicDTO> currentSubscriptions;

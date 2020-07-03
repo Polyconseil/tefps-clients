@@ -4,6 +4,9 @@ import fr.polyconseil.smartcity.tefpsclients.dto.tv.ParkingRightDTO;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FnmsParkingRightPriceResultV1DTO {
 
     private int consumedParkingTime;

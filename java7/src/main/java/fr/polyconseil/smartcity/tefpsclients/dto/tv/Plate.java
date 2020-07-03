@@ -2,6 +2,9 @@ package fr.polyconseil.smartcity.tefpsclients.dto.tv;
 
 import javax.annotation.Nullable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Plate {
 
     /**

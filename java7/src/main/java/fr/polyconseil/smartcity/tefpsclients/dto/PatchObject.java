@@ -1,6 +1,5 @@
 package fr.polyconseil.smartcity.tefpsclients.dto;
 
-
 import javax.annotation.Nullable;
 
 public class PatchObject {

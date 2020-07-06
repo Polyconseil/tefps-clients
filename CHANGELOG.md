@@ -19,3 +19,8 @@
 
  * Java7 TefpsTvClient - Add tariffCode parameter
  * Update com.fasterxml.jackson.core to 2.9.10.1
+
+### 1.3.0
+
+ * Java7 TefpsPricingClient
+

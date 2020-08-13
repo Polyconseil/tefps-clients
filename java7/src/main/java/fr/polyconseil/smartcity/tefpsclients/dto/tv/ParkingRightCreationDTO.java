@@ -35,6 +35,9 @@ public class ParkingRightCreationDTO {
     private String tariffCode;
 
     @Nullable
+    private Integer tariffDuration;
+
+    @Nullable
     private Map<String, Object> pricingContext;
 
     public ParkingRightType getType() {
@@ -143,5 +146,13 @@ public class ParkingRightCreationDTO {
 
     public void setTariffCode(String tariffCode) {
         this.tariffCode = tariffCode;
+    }
+
+    public Integer getTariffDuration() {
+        return tariffDuration;
+    }
+
+    public void setTariffDuration(Integer tariffDuration) {
+        this.tariffDuration = tariffDuration;
     }
 }

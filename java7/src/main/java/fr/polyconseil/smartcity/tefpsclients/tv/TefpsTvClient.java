@@ -36,6 +36,7 @@ public class TefpsTvClient {
             String zoneId,
             String parkId,
             String tariffCode,
+            @Nullable Integer tariffDuration,
             String plate,
             @Nullable String plateCountry,
             String pricingCategory,
@@ -54,6 +55,7 @@ public class TefpsTvClient {
         dto.setZoneId(zoneId);
         dto.setParkId(parkId);
         dto.setTariffCode(tariffCode);
+        dto.setTariffDuration(tariffDuration);
 
         Plate licensePlate = new Plate();
         licensePlate.setPlate(plate);

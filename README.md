@@ -14,7 +14,7 @@ Add maven dependency to your pom.xml
 <dependency>
     <groupId>fr.polyconseil.smartcity</groupId>
     <artifactId>tefps-clients</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 

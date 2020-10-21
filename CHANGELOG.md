@@ -24,3 +24,7 @@
 
  * Java7 TefpsPricingClient
 
+### 1.4.0
+
+ * Java7 TefpsTvClient - add tariffDuration parameter
+
